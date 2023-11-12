@@ -69,7 +69,7 @@ public class SkierRestController {
     public List<Skier> getAllSkiers(){
         return skierServices.retrieveAllSkiers();
     }
-    
+
     private Skier convertToEntity(SkierDTO skierDTO) {
         Skier skier = new Skier();
         skier.setNumSkier(skierDTO.getNumSkier());
