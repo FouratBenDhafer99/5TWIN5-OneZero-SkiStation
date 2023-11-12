@@ -54,21 +54,43 @@ public class SkierServicesJUnitTest {
 //    }
 
     @Test
-    public void testAddSkier() {
-        Skier skier = new Skier();
-        skier.setFirstName("John");
-        skier.setLastName("Doe");
-        skier.setDateOfBirth(LocalDate.of(1990, 1, 1));
-        Subscription subscription = new Subscription();
-        subscription.setStartDate(LocalDate.now());
-        subscription.setTypeSub(TypeSubscription.ANNUAL); // You can choose any type here
-        skier.setSubscription(subscription);
+    public void testAddSkierWithAnnualSubscription() {
+        Skier skier = createSkierWithSubscription(TypeSubscription.ANNUAL);
         when(skierRepository.save(any(Skier.class))).thenReturn(skier);
         Skier savedSkier = skierServices.addSkier(skier);
         verify(skierRepository, times(1)).save(skier);
         reset(skierRepository);
     }
 
+    @Test
+    public void testAddSkierWithSemestrialSubscription() {
+        Skier skier = createSkierWithSubscription(TypeSubscription.SEMESTRIEL);
+        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
+        Skier savedSkier = skierServices.addSkier(skier);
+        verify(skierRepository, times(1)).save(skier);
+        reset(skierRepository);
+    }
+
+    @Test
+    public void testAddSkierWithMonthlySubscription() {
+        Skier skier = createSkierWithSubscription(TypeSubscription.MONTHLY);
+        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
+        Skier savedSkier = skierServices.addSkier(skier);
+        verify(skierRepository, times(1)).save(skier);
+        reset(skierRepository);
+    }
+
+    private Skier createSkierWithSubscription(TypeSubscription typeSubscription) {
+        Skier skier = new Skier();
+        skier.setFirstName("John");
+        skier.setLastName("Doe");
+        skier.setDateOfBirth(LocalDate.of(1990, 1, 1));
+        Subscription subscription = new Subscription();
+        subscription.setStartDate(LocalDate.now());
+        subscription.setTypeSub(typeSubscription);
+        skier.setSubscription(subscription);
+        return skier;
+    }
 
     @Test
     public void testRetrieveSkier() {
