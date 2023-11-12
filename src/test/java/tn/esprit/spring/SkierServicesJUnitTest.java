@@ -54,7 +54,7 @@ public class SkierServicesJUnitTest {
 //    }
 
     @Test
-    void testAddSkier() {
+    public void testAddSkier() {
         Skier skier = new Skier();
         skier.setFirstName("John");
         skier.setLastName("Doe");
