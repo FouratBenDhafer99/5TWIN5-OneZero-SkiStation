@@ -175,7 +175,7 @@ public class SkierServicesJUnitTest {
     }
 
     @Test
-    void testRetrieveSkiersBySubscriptionType() {
+    public void testRetrieveSkiersBySubscriptionType() {
         TypeSubscription typeSubscription = TypeSubscription.ANNUAL;
         Skier skier1 = new Skier();
         skier1.setNumSkier(1L);
