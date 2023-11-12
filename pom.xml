@@ -70,32 +70,13 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <!--Todo Youssef -->
-    <!--    <distributionManagement>-->
-    <!--        <downloadUrl>http://192.168.100.2:8081/repository/maven-releases/</downloadUrl>-->
-    <!--    </distributionManagement>-->
-    <!--    todo Taher -->
-    <!--    <distributionManagement>-->
-    <!--        <repository>-->
-    <!--            <id>deploymentRepo</id>-->
-    <!--            <name>Nexus Repository</name>-->
-    <!--            <url>http://localhost:8081/repository/maven-releases/</url>-->
-    <!--        </repository>-->
-    <!--    </distributionManagement>-->
-    <!-- todo rayen -->
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>Releases</name>
-            <url>http://172.10.0.140:8081/repository/maven-releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>Snapshot</name>
-            <url>http://172.10.0.140:8081/repository/maven-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
+        <distributionManagement>
+            <repository>
+                <id>deploymentRepo</id>
+                <name>Nexus Repository</name>
+                <url>http://172.10.0.140:8081/repository/maven-releases/</url>
+            </repository>
+        </distributionManagement>
     <build>
         <finalName>5TWIN5-OneZero-SkiStation</finalName>
         <plugins>
