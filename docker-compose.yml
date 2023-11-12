@@ -5,7 +5,7 @@ services:
     image: mysql:latest
     container_name: mysql-container1
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD= yes
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
     ports:
       - "3306:3306"
     networks:
@@ -14,7 +14,7 @@ services:
       - mysql-data:/var/lib/mysql
 
   app:
-    image: rayenbourguiba/skistationdevopsimage:latest
+    image: 5twin5-onezero-skistation-pipeline_spring_app_1:latest
     container_name: spring-app
     ports:
       - "8089:8089"
