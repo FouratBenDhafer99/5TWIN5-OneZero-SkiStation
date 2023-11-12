@@ -9,7 +9,9 @@ import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repositories.*;
 import tn.esprit.spring.services.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,7 +40,7 @@ public class SkierServicesJUnitTest {
 
     @Test
     public void testAddSkier() {
-        Skier skier = new Skier();
+        Skier skier = new Skier(1L, "Rayen", "Bourguiba", LocalDate.now(),"Zarzis", new Subscription(), new HashSet<Piste>(), new HashSet<Registration>());
         when(skierRepository.save(skier)).thenReturn(skier);
         Skier result = skierServices.addSkier(skier);
         assertEquals(skier, result);
