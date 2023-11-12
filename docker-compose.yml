@@ -14,7 +14,7 @@ services:
       - db:/var/lib/mysqldb
 
   spring_app:
-    image: rayenbourguiba/skistationdevopsimage:${IMAGE_TAG}
+    image: rayenbourguiba/skistationdevopsimage:latest
     container_name: spring_app
     restart: on-failure
     environment:
