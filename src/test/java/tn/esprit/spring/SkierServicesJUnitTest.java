@@ -59,6 +59,7 @@ public class SkierServicesJUnitTest {
         Skier savedSkier = skierServices.addSkier(skier);
         verify(skierRepository, times(1)).save(skier);
         reset(skierRepository);
+        assertEquals(skier.getSubscription().getStartDate().plusYears(1), skier.getSubscription().getEndDate());
     }
 
     @Test
@@ -68,6 +69,7 @@ public class SkierServicesJUnitTest {
         Skier savedSkier = skierServices.addSkier(skier);
         verify(skierRepository, times(1)).save(skier);
         reset(skierRepository);
+        assertEquals(skier.getSubscription().getStartDate().plusMonths(6), skier.getSubscription().getEndDate());
     }
 
     @Test
@@ -77,8 +79,8 @@ public class SkierServicesJUnitTest {
         Skier savedSkier = skierServices.addSkier(skier);
         verify(skierRepository, times(1)).save(skier);
         reset(skierRepository);
+        assertEquals(skier.getSubscription().getStartDate().plusMonths(1), skier.getSubscription().getEndDate());
     }
-
     private Skier createSkierWithSubscription(TypeSubscription typeSubscription) {
         Skier skier = new Skier();
         skier.setFirstName("John");
