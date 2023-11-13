@@ -152,38 +152,18 @@ public class SkierServicesJUnitTest {
     @Test
     public void testAssignSkierToSubscription() {
         Long numSkier = 1L;
-        Long numSubscription = 1L;
-
-        // Create a Skier instance
+        Long numSubscription = 2L;
         Skier skier = new Skier();
-        skier.setNumSkier(numSkier);  // Set other necessary fields
-
-        // Create a Subscription instance
         Subscription subscription = new Subscription();
-        subscription.setNumSub(numSubscription);  // Set other necessary fields
-
-        when(skierRepository.findById(eq(numSkier))).thenReturn(Optional.of(skier));
-        when(subscriptionRepository.findById(eq(numSubscription))).thenReturn(Optional.of(subscription));
-
-        // Logging added for troubleshooting
-        System.out.println("Before assignSkierToSubscription");
-
+        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
+        when(subscriptionRepository.findById(numSubscription)).thenReturn(Optional.of(subscription));
+        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
         Skier result = skierServices.assignSkierToSubscription(numSkier, numSubscription);
-
-        System.out.println("After assignSkierToSubscription");
-
-        if (result == null) {
-            System.out.println("Result is null");
-            System.out.println("Skier: " + skier);
-            System.out.println("Subscription: " + subscription);
-        }
-
-        assertNotNull(result);
-        verify(skierRepository, times(1)).findById(eq(numSkier));
-        verify(subscriptionRepository, times(1)).findById(eq(numSubscription));
-        verify(skierRepository, times(1)).save(any(Skier.class));
+        verify(skierRepository, times(1)).findById(numSkier);
+        verify(subscriptionRepository, times(1)).findById(numSubscription);
+        verify(skierRepository, times(1)).save(skier);
+        assertEquals(subscription, result.getSubscription());
     }
-
 
     @Test
     public void testAssignSkierToPiste() {
