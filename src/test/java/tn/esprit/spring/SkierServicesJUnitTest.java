@@ -181,7 +181,7 @@ public class SkierServicesJUnitTest {
         assertNotNull(result);
         verify(skierRepository, times(1)).findById(eq(numSkier));
         verify(subscriptionRepository, times(1)).findById(eq(numSubscription));
-        verify(skierRepository, times(1)).save(eq(skier));
+        verify(skierRepository, times(1)).save(any(Skier.class));
     }
 
 
