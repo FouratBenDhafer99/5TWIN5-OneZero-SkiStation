@@ -26,6 +26,7 @@ services:
       - mysqldb
 
   cadvisor:
+<<<<<<< HEAD
     container_name: cadvisor
     image: gcr.io/cadvisor/cadvisor:latest
     ports:
@@ -39,6 +40,21 @@ services:
     privileged: true
     devices:
       - "/dev/kmsg"
+=======
+   container_name: cadvisor
+   image: gcr.io/cadvisor/cadvisor:latest
+   ports:
+    - "9091:8080"
+   volumes:
+    - "/:/rootfs"
+    - "/var/run:/var/run"
+    - "/sys:/sys"
+    - "/var/lib/docker/:/var/lib/docker"
+    - "/dev/disk/:/dev/disk"
+   privileged: true
+   devices:
+    - "/dev/kmsg"
+>>>>>>> ca78ca85bbb740fb27b360d107a4834b5c3482d5
 
   prometheus:
     container_name: prometheus
@@ -69,4 +85,8 @@ services:
       - prometheus
 volumes:
   db:
+<<<<<<< HEAD
   grafana-data:
+=======
+  grafana-data:
+>>>>>>> ca78ca85bbb740fb27b360d107a4834b5c3482d5

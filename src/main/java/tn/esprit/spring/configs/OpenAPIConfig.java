@@ -12,9 +12,7 @@ public class OpenAPIConfig {
 
     @Bean
     public OpenAPI springShopOpenAPI() {
-        return new OpenAPI()
-                .info(infoAPI());
-
+        return new OpenAPI().info(infoAPI());
     }
 
     public Info infoAPI() {
@@ -24,9 +22,9 @@ public class OpenAPIConfig {
     }
 
     public Contact contactAPI() {
-        return new Contact().name("TEAM ASI II")
-                .email("ons.bensalah@esprit.tn")
-                .url("https://www.linkedin.com/in/ons-ben-salah-24b73494/");
+        return new Contact().name("Youssef")
+                .email("youssef.almia@esprit.tn")
+                .url("https://www.linkedin.com/in/youssef-almia-193817183/");
     }
 
 
