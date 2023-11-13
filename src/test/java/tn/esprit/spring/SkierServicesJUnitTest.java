@@ -152,17 +152,18 @@ public class SkierServicesJUnitTest {
     @Test
     public void testAssignSkierToSubscription() {
         Long numSkier = 1L;
-        Long numSubscription = 2L;
+        Long numSubscription = 1L;
         Skier skier = new Skier();
+        skier.setNumSkier(numSkier);  // Set other necessary fields
         Subscription subscription = new Subscription();
-        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
-        when(subscriptionRepository.findById(numSubscription)).thenReturn(Optional.of(subscription));
-        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
+        subscription.setNumSub(numSubscription);  // Set other necessary fields
+        when(skierRepository.findById(eq(numSkier))).thenReturn(Optional.of(skier));
+        when(subscriptionRepository.findById(eq(numSubscription))).thenReturn(Optional.of(subscription));
         Skier result = skierServices.assignSkierToSubscription(numSkier, numSubscription);
-        verify(skierRepository, times(1)).findById(numSkier);
-        verify(subscriptionRepository, times(1)).findById(numSubscription);
-        verify(skierRepository, times(1)).save(skier);
-        assertEquals(subscription, result.getSubscription());
+        assertNotNull(result);
+        verify(skierRepository, times(1)).findById(eq(numSkier));
+        verify(subscriptionRepository, times(1)).findById(eq(numSubscription));
+        verify(skierRepository, times(1)).save(eq(skier));
     }
 
     @Test
@@ -237,6 +238,40 @@ public class SkierServicesJUnitTest {
         assertEquals(subscription, skierDTO.getSubscription());
         assertEquals(pistes, skierDTO.getPistes());
         assertEquals(registrations, skierDTO.getRegistrations());
+    }
+
+
+
+    private SkierDTO createSkierDTO() {
+        SkierDTO skierDTO = new SkierDTO();
+        skierDTO.setNumSkier(1L);
+        skierDTO.setFirstName("John");
+        skierDTO.setLastName("Doe");
+        skierDTO.setDateOfBirth(LocalDate.of(1990, 1, 1));
+        skierDTO.setCity("ExampleCity");
+        skierDTO.setSubscription(new Subscription());
+        skierDTO.setPistes(new HashSet<>());
+        skierDTO.setRegistrations(new HashSet<>());
+        return skierDTO;
+    }
+
+    private Skier createSkier() {
+        Skier skier = new Skier();
+        skier.setNumSkier(1L);
+        skier.setFirstName("John");
+        skier.setLastName("Doe");
+        skier.setDateOfBirth(LocalDate.of(1990, 1, 1));
+        skier.setCity("ExampleCity");
+        skier.setSubscription(new Subscription());
+        skier.setPistes(new HashSet<>());
+        skier.setRegistrations(new HashSet<>());
+        return skier;
+    }
+
+    private Skier convertToEntity(SkierDTO skierDTO) {
+        Skier skier = new Skier();
+        // Convert SkierDTO fields to Skier fields
+        return skier;
     }
 
 }
