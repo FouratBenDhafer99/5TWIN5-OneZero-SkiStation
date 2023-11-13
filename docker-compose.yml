@@ -1,15 +1,17 @@
-version: "3"
+version: '3.3'
+
 services:
   mysqldb:
+    image: mysql:8
     container_name: mysqldb
     image: mysql:${IMAGE_TAG}
     restart: unless-stopped
     ports:
       - 3306:3306
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ALLOW_EMPTY_PASSWORD= yes
       - MYSQL_DATABASE=stationSki
-    command: ["sh", "-c", "echo IMAGE_TAG: ${IMAGE_TAG} && entrypoint.sh"]
+      command: ["sh", "-c", "echo IMAGE_TAG: ${IMAGE_TAG} && entrypoint.sh"]
     volumes:
       - db:/var/lib/mysqldb
 
@@ -24,49 +26,8 @@ services:
       - 8083:8083
     depends_on:
       - mysqldb
-
-  cadvisor:
-   container_name: cadvisor
-   image: gcr.io/cadvisor/cadvisor:latest
-   ports:
-    - "9091:8080"
-   volumes:
-    - "/:/rootfs"
-    - "/var/run:/var/run"
-    - "/sys:/sys"
-    - "/var/lib/docker/:/var/lib/docker"
-    - "/dev/disk/:/dev/disk"
-   privileged: true
-   devices:
-    - "/dev/kmsg"
-
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
     volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
-    privileged: true
-    depends_on:
-      - cadvisor
+      - db:/var/lib/mysql
 
-  grafana:
-    container_name: grafana
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
-      - DS_PROMETHEUS=prometheus
-    volumes:
-      - "grafana-data:/var/lib/grafana"
-      - "./datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml"
-      - "./:/var/lib/grafana/dashboards"
-      - "./default.yaml:/etc/grafana/provisioning/dashboards/default.yaml"
-    privileged: true
-    depends_on:
-      - prometheus
 volumes:
   db:
-  grafana-data:

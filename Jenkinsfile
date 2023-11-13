@@ -1,12 +1,12 @@
 pipeline {
     agent any
     environment {
-        registry= "youssefalmia/5twin5-g7-skistation"
+        registry= "rayenbourguiba/skistationdevopsimage"
         registryCredential = 'DockerHub'
 
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "http://192.168.100.2:8081"
+        NEXUS_URL = "http://172.10.0.140:8081"
         NEXUS_REPOSITORY = "nexus-repo-skistation"
         NEXUS_CREDENTIAL_ID = "nexus-user-credential"
 
@@ -16,7 +16,7 @@ pipeline {
         stage('Checkout GIT'){
             steps{
                 echo 'Pulling...';
-                git branch: 'YoussefALMIA-5TWIN5-G7',
+                git branch: 'RayenBourguiba-5TWIN5-G7',
                 url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation';
             }
         }
@@ -30,10 +30,15 @@ pipeline {
                 sh 'mvn test'
             }
         }
+//        stage('SonarQube Analysis') {
+//            steps {
+//                    sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=password"
+//            }
+//        }
         stage('Code Coverage and SonarQube Analysis') {
             steps {
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=password'
             }
         }
         stage('Building Docker image') {
