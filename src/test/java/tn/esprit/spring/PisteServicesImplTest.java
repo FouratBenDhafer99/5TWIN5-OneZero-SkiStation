@@ -20,6 +20,7 @@ import tn.esprit.spring.services.PisteServicesImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 //@SpringBootTest
@@ -62,6 +63,44 @@ public class PisteServicesImplTest {
 
         // Assertions
         Assertions.assertEquals(pisteToAdd, result);
+    }
+    @Test
+    public Piste testRetrievePisteById() {
+        // Mock the behavior of pisteRepository.findById()
+        Piste mockPiste = new Piste(4L, "piste4", Color.BLACK, 5, 4, null);
+        Mockito.when(pisteRepository.findById(4L)).thenReturn(Optional.of(mockPiste));
+
+        // Call the actual service method
+        Optional<Piste> result = Optional.ofNullable(pisteServices.retrievePiste(4L));
+
+        // Assertions
+        Assertions.assertTrue(result.isPresent());
+        Assertions.assertEquals(mockPiste, result.get());
+        return result.get();
+    }
+
+    @Test
+    public void testUpdatePiste() {
+        // Create a Piste to update
+        Piste pisteToUpdate = new Piste(5L, "piste5", Color.GREEN, 6, 5, null);
+
+        // Call the actual service method
+        Piste result = pisteServices.updatePiste(pisteToUpdate);
+
+        // Assertions
+        Assertions.assertEquals(pisteToUpdate, result);
+    }
+
+
+    @Test
+    public void testDeletePiste() {
+        // Mock the behavior of pisteRepository.deleteById()
+        Mockito.doNothing().when(pisteRepository).deleteById(5L);
+        // Call the actual service method
+        pisteServices.removePiste(5L);
+
+        // Assertions (Optional: Verify that the delete method was called)
+        Mockito.verify(pisteRepository, Mockito.times(1)).deleteById(5L);
     }
 
 

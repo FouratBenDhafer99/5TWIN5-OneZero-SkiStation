@@ -13,4 +13,6 @@ public interface IPisteServices {
     void removePiste (Long numPiste);
 
     Piste retrievePiste (Long numPiste);
+
+    Piste updatePiste(Piste piste);
 }
