@@ -72,6 +72,7 @@ public class SkierServicesJUnitTest {
         assertEquals(skier.getSubscription().getStartDate().plusMonths(6), skier.getSubscription().getEndDate());
     }
 
+
     @Test
     public void testAddSkierWithMonthlySubscription() {
         Skier skier = createSkierWithSubscription(TypeSubscription.MONTHLY);
