@@ -11,7 +11,7 @@ import tn.esprit.spring.services.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 
@@ -70,6 +69,17 @@ public class SkierServicesJUnitTest {
         verify(skierRepository, times(1)).save(skier);
         reset(skierRepository);
         assertEquals(skier.getSubscription().getStartDate().plusMonths(6), skier.getSubscription().getEndDate());
+    }
+
+    @Test
+    public void testAddSkierWithUnsupportedSubscriptionType() {
+        Skier skier = createSkierWithSubscription(TypeSubscription.ANNUAL);
+        skier.getSubscription().setTypeSub(null);
+        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
+        Skier savedSkier = skierServices.addSkier(skier);
+        verify(skierRepository, times(1)).save(skier);
+        reset(skierRepository);
+        assertNotNull(savedSkier);
     }
 
 
