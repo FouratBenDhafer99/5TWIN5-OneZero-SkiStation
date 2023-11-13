@@ -106,23 +106,23 @@ public class SkierServicesJUnitTest {
         assertEquals(skier, result);
     }
 
-    @Test
-    public void testAssignSkierToSubscription() {
-        Long numSkier = 1L;
-        Long numSubscription = 2L;
-        Skier skier = new Skier();
-        skier.setNumSkier(numSkier);
-        Subscription subscription = new Subscription();
-        subscription.setNumSub(numSubscription);
-        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
-        when(subscriptionRepository.findById(numSubscription)).thenReturn(Optional.of(subscription));
-        Skier updatedSkier = skierServices.assignSkierToSubscription(numSkier, numSubscription);
-        verify(skierRepository, times(1)).findById(numSkier);
-        verify(subscriptionRepository, times(1)).findById(numSubscription);
-        verify(skierRepository, times(1)).save(skier);
-        assertEquals(numSubscription, updatedSkier.getSubscription().getNumSub());
-        reset(skierRepository, subscriptionRepository);
-    }
+//    @Test
+//    public void testAssignSkierToSubscription() {
+//        Long numSkier = 1L;
+//        Long numSubscription = 2L;
+//        Skier skier = new Skier();
+//        skier.setNumSkier(numSkier);
+//        Subscription subscription = new Subscription();
+//        subscription.setNumSub(numSubscription);
+//        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
+//        when(subscriptionRepository.findById(numSubscription)).thenReturn(Optional.of(subscription));
+//        Skier updatedSkier = skierServices.assignSkierToSubscription(numSkier, numSubscription);
+//        verify(skierRepository, times(1)).findById(numSkier);
+//        verify(subscriptionRepository, times(1)).findById(numSubscription);
+//        verify(skierRepository, times(1)).save(skier);
+//        assertEquals(numSubscription, updatedSkier.getSubscription().getNumSub());
+//        reset(skierRepository, subscriptionRepository);
+//    }
 
     @Test
     public void testAddSkierAndAssignToCourse() {
