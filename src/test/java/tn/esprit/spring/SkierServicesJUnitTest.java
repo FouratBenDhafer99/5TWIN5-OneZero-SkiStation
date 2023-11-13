@@ -50,14 +50,6 @@ public class SkierServicesJUnitTest {
         assertEquals(skiers, result);
     }
 
-//    @Test
-//    public void testAddSkier() {
-//        Skier skier = new Skier(1L, "Rayen", "Bourguiba", LocalDate.now(),"Zarzis", new Subscription(), new HashSet<Piste>(), new HashSet<Registration>());
-//        when(skierRepository.save(skier)).thenReturn(skier);
-//        Skier result = skierServices.addSkier(skier);
-//        assertEquals(skier, result);
-//    }
-
     @Test
     public void testAddSkierWithAnnualSubscription() {
         Skier skier = createSkierWithSubscription(TypeSubscription.ANNUAL);
@@ -106,24 +98,6 @@ public class SkierServicesJUnitTest {
         assertEquals(skier, result);
     }
 
-//    @Test
-//    public void testAssignSkierToSubscription() {
-//        Long numSkier = 1L;
-//        Long numSubscription = 2L;
-//        Skier skier = new Skier();
-//        skier.setNumSkier(numSkier);
-//        Subscription subscription = new Subscription();
-//        subscription.setNumSub(numSubscription);
-//        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
-//        when(subscriptionRepository.findById(numSubscription)).thenReturn(Optional.of(subscription));
-//        Skier updatedSkier = skierServices.assignSkierToSubscription(numSkier, numSubscription);
-//        verify(skierRepository, times(1)).findById(numSkier);
-//        verify(subscriptionRepository, times(1)).findById(numSubscription);
-//        verify(skierRepository, times(1)).save(skier);
-//        assertEquals(numSubscription, updatedSkier.getSubscription().getNumSub());
-//        reset(skierRepository, subscriptionRepository);
-//    }
-
     @Test
     public void testAddSkierAndAssignToCourse() {
         Long numCourse = 1L;
@@ -156,24 +130,6 @@ public class SkierServicesJUnitTest {
         reset(skierRepository);
     }
 
-//    @Test
-//    public void testAssignSkierToPiste() {
-//        Long numSkier = 1L;
-//        Long numPiste = 2L;
-//        Skier skier = new Skier();
-//        skier.setNumSkier(numSkier);
-//        Piste piste = new Piste();
-//        piste.setNumPiste(numPiste);
-//        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
-//        when(pisteRepository.findById(numPiste)).thenReturn(Optional.of(piste));
-//        Skier updatedSkier = skierServices.assignSkierToPiste(numSkier, numPiste);
-//        verify(skierRepository, times(1)).findById(numSkier);
-//        verify(pisteRepository, times(1)).findById(numPiste);
-//        verify(skierRepository, times(1)).save(skier);
-//        assertEquals(numPiste, updatedSkier.getPistes().iterator().next().getNumPiste());
-//        reset(skierRepository, pisteRepository);
-//    }
-
     @Test
     public void testRetrieveSkiersBySubscriptionType() {
         TypeSubscription typeSubscription = TypeSubscription.ANNUAL;
@@ -187,5 +143,21 @@ public class SkierServicesJUnitTest {
         verify(skierRepository, times(1)).findBySubscription_TypeSub(typeSubscription);
         assertEquals(2, retrievedSkiers.size());
         reset(skierRepository);
+    }
+
+    @Test
+    public void testAssignSkierToSubscription() {
+        Long numSkier = 1L;
+        Long numSubscription = 2L;
+        Skier skier = new Skier();
+        Subscription subscription = new Subscription();
+        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
+        when(subscriptionRepository.findById(numSubscription)).thenReturn(Optional.of(subscription));
+        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
+        Skier result = skierServices.assignSkierToSubscription(numSkier, numSubscription);
+        verify(skierRepository, times(1)).findById(numSkier);
+        verify(subscriptionRepository, times(1)).findById(numSubscription);
+        verify(skierRepository, times(1)).save(skier);
+        assertEquals(subscription, result.getSubscription());
     }
 }

@@ -41,7 +41,7 @@ public class SkierServicesMockitoTest {
     }
 
     @Test
-    public void testAddCourse() {
+    public void testAddSkier() {
         Skier skier = new Skier(3L,"Iheb", "Bourguiba", LocalDate.now(),"Ariana", new Subscription(), new HashSet<Piste>(), new HashSet<Registration>());
         when(skierRepository.save(skier)).thenReturn(skier);
         Skier result = skierServices.addSkier(skier);
@@ -49,7 +49,7 @@ public class SkierServicesMockitoTest {
     }
 
     @Test
-    public void testRetrieveCourse() {
+    public void testRetrieveSkier() {
         Long skierId = 4L;
         Skier skier = new Skier(4L,"Hassen", "Bourguiba", LocalDate.now(),"Tunis", new Subscription(), new HashSet<Piste>(), new HashSet<Registration>());
         when(skierRepository.findById(skierId)).thenReturn(Optional.of(skier));
@@ -57,20 +57,4 @@ public class SkierServicesMockitoTest {
         assertEquals(skier, result);
     }
 
-    @Test
-    public void testAddSkierAndAssignToCourse() {
-        Skier skier = new Skier();
-        skier.setRegistrations(new HashSet<>());
-        Long numCourse = 1L;
-        Course course = new Course();
-        course.setNumCourse(numCourse);
-        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
-        when(courseRepository.getById(numCourse)).thenReturn(course);
-        Skier result = skierServices.addSkierAndAssignToCourse(skier, numCourse);
-        verify(skierRepository, times(1)).save(skier);
-        verify(courseRepository, times(1)).getById(numCourse);
-        verify(registrationRepository, times(skier.getRegistrations().size())).save(any(Registration.class));
-        assertTrue(result.getRegistrations().stream().allMatch(registration -> registration.getCourse().equals(course)));
-    }
 }
-
