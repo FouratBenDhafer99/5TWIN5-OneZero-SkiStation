@@ -47,7 +47,6 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
 
         if (skier == null || course == null)
             return null;
-
         if(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(registration.getNumWeek(), skier.getNumSkier(), course.getNumCourse()) >=1){
             log.info("Sorry, you're already register to this course of the week :" + registration.getNumWeek());
             return null;
@@ -58,7 +57,7 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
         return assignRegistrationBasedOnCourseType(registration, skier, course, ageSkieur);
 
     }
-    private Registration assignRegistration (Registration registration, Skier skier, Course course){
+    public Registration assignRegistration (Registration registration, Skier skier, Course course){
         registration.setSkier(skier);
         registration.setCourse(course);
         return registrationRepository.save(registration);
@@ -103,6 +102,11 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
     @Override
     public List<Integer> numWeeksCourseOfInstructorBySupport(Long numInstructor, Support support) {
         return registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support);
+    }
+
+    @Override
+    public List<Subscription> retrieveSubscriptionsByDates(LocalDate startDate, LocalDate endDate) {
+        return null;
     }
 
 }

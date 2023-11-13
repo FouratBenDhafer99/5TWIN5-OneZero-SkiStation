@@ -35,7 +35,7 @@ public class PisteServicesImpl implements  IPisteServices{
     @Override
     public Piste updatePiste(Piste piste) {
         if (pisteRepository.findById(piste.getNumPiste()).orElse(null) != null)
-            return pisteRepository.save(piste);
+            pisteRepository.save(piste);
         return piste;
     }
 

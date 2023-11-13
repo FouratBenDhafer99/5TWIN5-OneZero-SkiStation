@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.spring.dtow.InstructorDTO;
 import tn.esprit.spring.entities.Instructor;
 import tn.esprit.spring.services.IInstructorServices;
 
@@ -19,13 +20,13 @@ public class InstructorRestController {
 
     @Operation(description = "Add Instructor")
     @PostMapping("/add")
-    public Instructor addInstructor(@RequestBody Instructor instructor){
-        return  instructorServices.addInstructor(instructor);
+    public Instructor addInstructor(@RequestBody InstructorDTO instructor){
+        return  instructorServices.addInstructor(convertToInstructor(instructor));
     }
     @Operation(description = "Add Instructor and Assign To Course")
     @PutMapping("/addAndAssignToCourse/{numCourse}")
-    public Instructor addAndAssignToInstructor(@RequestBody Instructor instructor, @PathVariable("numCourse")Long numCourse){
-        return  instructorServices.addInstructorAndAssignToCourse(instructor,numCourse);
+    public Instructor addAndAssignToInstructor(@RequestBody InstructorDTO instructor, @PathVariable("numCourse")Long numCourse){
+        return  instructorServices.addInstructorAndAssignToCourse(convertToInstructor(instructor),numCourse);
     }
     @Operation(description = "Retrieve all Instructors")
     @GetMapping("/all")
@@ -35,8 +36,8 @@ public class InstructorRestController {
 
     @Operation(description = "Update Instructor ")
     @PutMapping("/update")
-    public Instructor updateInstructor(@RequestBody Instructor instructor){
-        return  instructorServices.updateInstructor(instructor);
+    public Instructor updateInstructor(@RequestBody InstructorDTO instructor){
+        return  instructorServices.updateInstructor(convertToInstructor(instructor));
     }
 
     @Operation(description = "Retrieve Instructor by Id")
@@ -45,4 +46,13 @@ public class InstructorRestController {
         return instructorServices.retrieveInstructor(numInstructor);
     }
 
+    private Instructor convertToInstructor(InstructorDTO instructorDTO) {
+        Instructor instructor= new Instructor();
+        instructor.setNumInstructor(instructorDTO.getNumInstructor());
+        instructor.setFirstName(instructorDTO.getFirstName());
+        instructor.setLastName(instructorDTO.getLastName());
+        instructor.setDateOfHire(instructorDTO.getDateOfHire());
+
+        return instructor;
+    }
 }
