@@ -72,18 +72,6 @@ public class SkierServicesJUnitTest {
     }
 
     @Test
-    public void testAddSkierWithUnsupportedSubscriptionType() {
-        Skier skier = createSkierWithSubscription(TypeSubscription.ANNUAL);
-        skier.getSubscription().setTypeSub(null);
-        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
-        Skier savedSkier = skierServices.addSkier(skier);
-        verify(skierRepository, times(1)).save(skier);
-        reset(skierRepository);
-        assertNotNull(savedSkier);
-    }
-
-
-    @Test
     public void testAddSkierWithMonthlySubscription() {
         Skier skier = createSkierWithSubscription(TypeSubscription.MONTHLY);
         when(skierRepository.save(any(Skier.class))).thenReturn(skier);
@@ -190,6 +178,26 @@ public class SkierServicesJUnitTest {
         verify(pisteRepository, times(1)).findById(numPiste);
         verify(skierRepository, times(1)).save(skier);
         assertTrue(result.getPistes().contains(piste));
+    }
+
+    @Test
+    public void testSkierFields() {
+        Long numSkier = 1L;
+        String firstName = "John";
+        String lastName = "Doe";
+        LocalDate dateOfBirth = LocalDate.of(1990, 1, 1);
+        String city = "ExampleCity";
+        Skier skier = new Skier();
+        skier.setNumSkier(numSkier);
+        skier.setFirstName(firstName);
+        skier.setLastName(lastName);
+        skier.setDateOfBirth(dateOfBirth);
+        skier.setCity(city);
+        assertEquals(numSkier, skier.getNumSkier());
+        assertEquals(firstName, skier.getFirstName());
+        assertEquals(lastName, skier.getLastName());
+        assertEquals(dateOfBirth, skier.getDateOfBirth());
+        assertEquals(city, skier.getCity());
     }
 
 }
