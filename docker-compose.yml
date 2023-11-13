@@ -1,35 +1,37 @@
-version: '3.3'
-
+version: "3"
 services:
   mysqldb:
-    image: mysql:8
     container_name: mysqldb
-    environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD= yes
-      - MYSQL_DATABASE=stationSki
+    image: mysql/mysql-server:8.0
+    restart: unless-stopped
     ports:
-      - "3306:3306"
+      - 3306:3306
+    networks:
+      - mynetwork
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=stationSki
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+      - MYSQL_ROOT_HOST="%"
     volumes:
-      - db:/var/lib/mysql
+      - /home/mysql/data:/var/lib/mysql
 
-  app:
-    image: rayenbourguiba/skistationdevopsimage
-    container_name: spring-app
+  spring_app:
+    image: rayenbourguiba/skistationdevopsimage:latest
+    container_name: SkiStation
     restart: on-failure
+    networks:
+      - mynetwork
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true
+      - spring.datasource.username=root
+      - spring.datasource.password=root
     ports:
       - "8089:8089"
     depends_on:
       - mysqldb
-    environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/stationSki?useSSL=false",
-        "spring.datasource.username" : "root",
-        "spring.datasource.password" : "",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update"}'
-    volumes:
-      - .m2:/root/.m2
-    stdin_open: true
 
-volumes:
-  db:
+networks:
+  mynetwork:
+    driver: bridge
