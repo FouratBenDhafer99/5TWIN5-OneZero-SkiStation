@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import tn.esprit.spring.dto.SkierDTO;
 import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repositories.*;
 import tn.esprit.spring.services.*;
@@ -198,6 +199,44 @@ public class SkierServicesJUnitTest {
         assertEquals(lastName, skier.getLastName());
         assertEquals(dateOfBirth, skier.getDateOfBirth());
         assertEquals(city, skier.getCity());
+    }
+
+
+    @Test
+    public void testSkierDTOConstructor() {
+        SkierDTO skierDTO = new SkierDTO();
+        assertNotNull(skierDTO);
+    }
+
+    @Test
+    public void testSkierDTOFields() {
+        Long numSkier = 1L;
+        String firstName = "John";
+        String lastName = "Doe";
+        LocalDate dateOfBirth = LocalDate.of(1990, 1, 1);
+        String city = "ExampleCity";
+        Subscription subscription = new Subscription(); // Make sure to handle Subscription tests separately
+        Set<Piste> pistes = new HashSet<>(); // Make sure to handle Piste tests separately
+        Set<Registration> registrations = new HashSet<>(); // Make sure to handle Registration tests separately
+
+        SkierDTO skierDTO = new SkierDTO();
+        skierDTO.setNumSkier(numSkier);
+        skierDTO.setFirstName(firstName);
+        skierDTO.setLastName(lastName);
+        skierDTO.setDateOfBirth(dateOfBirth);
+        skierDTO.setCity(city);
+        skierDTO.setSubscription(subscription);
+        skierDTO.setPistes(pistes);
+        skierDTO.setRegistrations(registrations);
+
+        assertEquals(numSkier, skierDTO.getNumSkier());
+        assertEquals(firstName, skierDTO.getFirstName());
+        assertEquals(lastName, skierDTO.getLastName());
+        assertEquals(dateOfBirth, skierDTO.getDateOfBirth());
+        assertEquals(city, skierDTO.getCity());
+        assertEquals(subscription, skierDTO.getSubscription());
+        assertEquals(pistes, skierDTO.getPistes());
+        assertEquals(registrations, skierDTO.getRegistrations());
     }
 
 }
