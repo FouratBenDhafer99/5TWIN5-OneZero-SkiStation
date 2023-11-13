@@ -1,3 +1,4 @@
+def FAILED_STAGE
 pipeline {
     agent any
     environment {
@@ -14,24 +15,34 @@ pipeline {
     stages{
         stage('Checkout GIT'){
             steps{
-                echo 'Pulling...';
-                git branch: 'FouratBenDhafer-5TWIN5-G7',
-                url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation.git';
+                script{
+                    FAILED_STAGE=env.STAGE_NAME;
+                    echo 'Pulling...';
+                    git branch: 'FouratBenDhafer-5TWIN5-G7',
+                    url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation.git';
+                }
             }
         }
         stage('MVN package') {
             steps {
-                sh 'mvn -DskipTests clean package'
+                script{
+                    FAILED_STAGE=env.STAGE_NAME
+                    sh 'mvn -DskipTests clean package'
+                }
             }
         }
         stage('Unit Tests') {
             steps {
-                sh 'mvn test'
+                script{
+                    FAILED_STAGE=env.STAGE_NAME
+                    sh 'mvn test'
+                }
             }
         }
         stage('MVN SonarQube') {
             steps {
                 script {
+                    FAILED_STAGE=env.STAGE_NAME
                     sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
                     sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=adminn'
                 }
@@ -40,6 +51,7 @@ pipeline {
         stage('Nexus Deployment') {
             steps {
                 script {
+                    FAILED_STAGE=env.STAGE_NAME
                     def repositoryUrl = ''
                     if (isSnapshot()) {
                         repositoryUrl = "${NEXUS_URL}/repository/maven-snapshots/"
@@ -58,6 +70,7 @@ pipeline {
         stage('Building Docker image') {
             steps {
                 script {
+                    FAILED_STAGE=env.STAGE_NAME
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
@@ -65,6 +78,7 @@ pipeline {
         stage('Deploy docker image') {
             steps {
                 script {
+                    FAILED_STAGE=env.STAGE_NAME
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
@@ -73,13 +87,35 @@ pipeline {
         }
         stage('Docker compose') {
             steps {
-                sh "docker-compose up -d"
+                script{
+                    FAILED_STAGE=env.STAGE_NAME
+                    sh "docker-compose up -d"
+                }
             }
         }
         stage('Cleaning up') {
             steps {
-                sh "docker rmi $registry:$BUILD_NUMBER"
+                script{
+                    FAILED_STAGE=env.STAGE_NAME
+                    sh "docker rmi $registry:$BUILD_NUMBER"
+                }
             }
+        }
+    }
+    post {
+        success {
+            emailext(
+                    subject: "Pipeline Success: 5TWIN5-OneZero-SkiStation",
+                    body: "Congratulations! The pipeline executed successfully.",
+                    to: "fourat.bendhafer@esprit.tn"
+            )
+        }
+        failure {
+            emailext(
+                    subject: "Pipeline Failure: 5TWIN5-OneZero-SkiStation",
+                    body: "Oops! Something went wrong during the pipeline execution: ${FAILED_STAGE}.Please check the Jenkins logs for more details.",
+                    to: "fourat.bendhafer@esprit.tn"
+            )
         }
     }
 }
