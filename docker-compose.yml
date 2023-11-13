@@ -1,33 +1,37 @@
-version: '3.3'
-
+version: "3"
 services:
   mysqldb:
-    image: mysql:8
     container_name: mysqldb
-    image: mysql:${IMAGE_TAG}
+    image: mysql/mysql-server:8.0
     restart: unless-stopped
     ports:
       - 3306:3306
+    networks:
+      - mynetwork
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD= yes
+      - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=stationSki
-      command: ["sh", "-c", "echo IMAGE_TAG: ${IMAGE_TAG} && entrypoint.sh"]
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+      - MYSQL_ROOT_HOST="%"
     volumes:
-      - db:/var/lib/mysqldb
+      - /home/mysql/data:/var/lib/mysql
 
-  Subscription:
-    image: oumaima1115/5twin5-onezero-skistation:${IMAGE_TAG}
+  spring_app:
+    image: fouratbendhafer11/5twin5-onezero-skistation:latest
+    container_name: SkiStation
     restart: on-failure
+    networks:
+      - mynetwork
     environment:
       - spring.datasource.url=jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true
       - spring.datasource.username=root
-      - spring.datasource.password=
+      - spring.datasource.password=root
     ports:
-      - 8083:8083
+      - "8089:8089"
     depends_on:
       - mysqldb
-    volumes:
-      - db:/var/lib/mysql
 
-volumes:
-  db:
+networks:
+  mynetwork:
+    driver: bridge
