@@ -10,6 +10,8 @@ import tn.esprit.spring.repositories.*;
 import tn.esprit.spring.services.*;
 import java.time.LocalDate;
 import java.util.Set;
+
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import java.util.ArrayList;
@@ -160,4 +162,21 @@ public class SkierServicesJUnitTest {
         verify(skierRepository, times(1)).save(skier);
         assertEquals(subscription, result.getSubscription());
     }
+
+    @Test
+    public void testAssignSkierToPiste() {
+        Long numSkier = 1L;
+        Long numPiste = 2L;
+        Skier skier = new Skier();
+        Piste piste = new Piste();
+        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
+        when(pisteRepository.findById(numPiste)).thenReturn(Optional.of(piste));
+        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
+        Skier result = skierServices.assignSkierToPiste(numSkier, numPiste);
+        verify(skierRepository, times(1)).findById(numSkier);
+        verify(pisteRepository, times(1)).findById(numPiste);
+        verify(skierRepository, times(1)).save(skier);
+        assertTrue(result.getPistes().contains(piste));
+    }
+
 }
