@@ -31,19 +31,23 @@ public class SubscriptionServicesImpl implements ISubscriptionServices{
 
     @Override
     public Subscription addSubscription(Subscription subscription) {
-        switch (subscription.getTypeSub()) {
-            case ANNUAL:
-                subscription.setEndDate(subscription.getStartDate().plusYears(1));
-                break;
-            case SEMESTRIEL:
-                subscription.setEndDate(subscription.getStartDate().plusMonths(6));
-                break;
-            case MONTHLY:
-                subscription.setEndDate(subscription.getStartDate().plusMonths(1));
-                break;
+        if (subscription.getTypeSub() != null) {
+            switch (subscription.getTypeSub()) {
+                case ANNUAL:
+                    subscription.setEndDate(subscription.getStartDate().plusYears(1));
+                    break;
+                case SEMESTRIEL:
+                    subscription.setEndDate(subscription.getStartDate().plusMonths(6));
+                    break;
+                case MONTHLY:
+                    subscription.setEndDate(subscription.getStartDate().plusMonths(1));
+                    break;
+            }
         }
+
         return subscriptionRepository.save(subscription);
     }
+
 
     @Override
     public Subscription updateSubscription(Subscription subscription) {
