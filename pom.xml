@@ -100,9 +100,9 @@
     <!--        </snapshotRepository>-->
     <!--    </distributionManagement> -->
     <!-- todo Oumaima -->
-    <!--    <distributionManagement>-->
-    <!--        <downloadUrl>http://192.168.33.10:8081/repository/maven-releases/</downloadUrl>-->
-    <!--    </distributionManagement>-->
+        <distributionManagement>
+            <downloadUrl>http://192.168.33.10:8081/repository/maven-releases/</downloadUrl>
+        </distributionManagement>
 
     <build>
         <finalName>5TWIN5-OneZero-SkiStation</finalName>
