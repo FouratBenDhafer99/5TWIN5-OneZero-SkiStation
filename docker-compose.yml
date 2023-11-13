@@ -1,21 +1,20 @@
 version: "3"
 services:
-
   mysqldb:
     container_name: mysqldb
-    image: mysql:latest
+    image: mysql:${IMAGE_TAG}
     restart: unless-stopped
     ports:
       - 3306:3306
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=stationSki
-
+    command: ["sh", "-c", "echo IMAGE_TAG: ${IMAGE_TAG} && entrypoint.sh"]
     volumes:
       - db:/var/lib/mysqldb
 
   Subscription:
-    image: oumaima1115/5twin5-onezero-skistation:latest
+    image: oumaima1115/5twin5-onezero-skistation:${IMAGE_TAG}
     restart: on-failure
     environment:
       - spring.datasource.url=jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true
