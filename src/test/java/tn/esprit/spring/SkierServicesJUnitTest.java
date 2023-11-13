@@ -153,21 +153,38 @@ public class SkierServicesJUnitTest {
     public void testAssignSkierToSubscription() {
         Long numSkier = 1L;
         Long numSubscription = 1L;
+
+        // Create a Skier instance
         Skier skier = new Skier();
         skier.setNumSkier(numSkier);  // Set other necessary fields
+
+        // Create a Subscription instance
         Subscription subscription = new Subscription();
         subscription.setNumSub(numSubscription);  // Set other necessary fields
+
         when(skierRepository.findById(eq(numSkier))).thenReturn(Optional.of(skier));
         when(subscriptionRepository.findById(eq(numSubscription))).thenReturn(Optional.of(subscription));
+
+        // Logging added for troubleshooting
         System.out.println("Before assignSkierToSubscription");
+
         Skier result = skierServices.assignSkierToSubscription(numSkier, numSubscription);
+
         System.out.println("After assignSkierToSubscription");
+
+        if (result == null) {
+            System.out.println("Result is null");
+            System.out.println("Skier: " + skier);
+            System.out.println("Subscription: " + subscription);
+        }
+
         assertNotNull(result);
         verify(skierRepository, times(1)).findById(eq(numSkier));
         verify(subscriptionRepository, times(1)).findById(eq(numSubscription));
         verify(skierRepository, times(1)).save(eq(skier));
     }
-    
+
+
     @Test
     public void testAssignSkierToPiste() {
         Long numSkier = 1L;
