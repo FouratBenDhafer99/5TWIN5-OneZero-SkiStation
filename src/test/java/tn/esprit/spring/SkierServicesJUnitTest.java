@@ -159,13 +159,15 @@ public class SkierServicesJUnitTest {
         subscription.setNumSub(numSubscription);  // Set other necessary fields
         when(skierRepository.findById(eq(numSkier))).thenReturn(Optional.of(skier));
         when(subscriptionRepository.findById(eq(numSubscription))).thenReturn(Optional.of(subscription));
+        System.out.println("Before assignSkierToSubscription");
         Skier result = skierServices.assignSkierToSubscription(numSkier, numSubscription);
+        System.out.println("After assignSkierToSubscription");
         assertNotNull(result);
         verify(skierRepository, times(1)).findById(eq(numSkier));
         verify(subscriptionRepository, times(1)).findById(eq(numSubscription));
         verify(skierRepository, times(1)).save(eq(skier));
     }
-
+    
     @Test
     public void testAssignSkierToPiste() {
         Long numSkier = 1L;
