@@ -166,6 +166,27 @@ public class SkierServicesJUnitTest {
     }
 
     @Test
+    public void testAssignSkierNullToSubscription() {
+        Long numSkier = 1L;
+        Long numSubscription = 2L;
+        Skier skier = null;
+        Subscription subscription = new Subscription();
+        when(subscriptionRepository.findById(numSubscription)).thenReturn(Optional.of(subscription));
+        Skier result = skierServices.assignSkierToSubscription(numSkier, numSubscription);
+        assertNull(result);
+    }
+
+    @Test
+    public void testAssignSkierNullToSubscriptionNull() {
+        Long numSkier = 1L;
+        Long numSubscription = 2L;
+        Skier skier = null;
+        Subscription subscription = null;
+        Skier result = skierServices.assignSkierToSubscription(numSkier, numSubscription);
+        assertNull(result);
+    }
+
+    @Test
     public void testAssignSkierToPiste() {
         Long numSkier = 1L;
         Long numPiste = 2L;
@@ -179,6 +200,26 @@ public class SkierServicesJUnitTest {
         verify(pisteRepository, times(1)).findById(numPiste);
         verify(skierRepository, times(1)).save(skier);
         assertTrue(result.getPistes().contains(piste));
+    }
+
+    @Test
+    public void testAssignSkierToSubscriptionNull() {
+        Long numSkier = 1L;
+        Long numSubscription = 2L;
+        Skier skier = new Skier();
+        Subscription subscription = null;
+        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
+        Skier result = skierServices.assignSkierToSubscription(numSkier, numSubscription);
+        assertNull(result);
+    }
+
+    @Test
+    public void testAssignSkierToPisteNull() {
+        Long numSkier = 1L;
+        Long numPiste = 2L;
+        Skier skier = null;
+        Skier result = skierServices.assignSkierToPiste(numSkier, numPiste);
+        assertNull(result);
     }
 
     @Test

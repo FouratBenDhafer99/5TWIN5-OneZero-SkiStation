@@ -11,7 +11,6 @@ import tn.esprit.spring.entities.Subscription;
 import java.time.LocalDate;
 import java.util.Set;
 
-@AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
