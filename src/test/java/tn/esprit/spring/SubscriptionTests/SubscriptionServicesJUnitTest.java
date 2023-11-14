@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import tn.esprit.spring.dto.SubscriptionDTO;
 import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repositories.*;
 import tn.esprit.spring.services.*;
@@ -31,6 +32,7 @@ public class SubscriptionServicesJUnitTest {
     @Test
     public void testRetrieveAllSubscriptions() {
         List<Subscription> subscriptions = new ArrayList<>();
+        SubscriptionDTO subscriptionDTO= new SubscriptionDTO();
         when(subscriptionRepository.findAll()).thenReturn(subscriptions);
         List<Subscription> result = subscriptionServices.retrieveAllSubscriptions();
         assertEquals(subscriptions, result);
