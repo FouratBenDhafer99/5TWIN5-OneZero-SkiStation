@@ -31,7 +31,7 @@ pipeline {
                 }
             }
         }
-        stage('Unit Tests') {
+        stage('JUnit & Mockito Tests') {
             steps {
                 script{
                     FAILED_STAGE=env.STAGE_NAME
@@ -48,7 +48,7 @@ pipeline {
                 }
             }
         }
-        stage('Nexus Deployment') {
+        stage('Deploy Nexus') {
             steps {
                 script {
                     FAILED_STAGE=env.STAGE_NAME
@@ -67,7 +67,7 @@ pipeline {
                 }
             }
         }
-        stage('Building Docker image') {
+        stage('Build Docker image') {
             steps {
                 script {
                     FAILED_STAGE=env.STAGE_NAME
@@ -75,7 +75,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy docker image') {
+        stage('Deploy Docker image') {
             steps {
                 script {
                     FAILED_STAGE=env.STAGE_NAME
@@ -85,7 +85,7 @@ pipeline {
                 }
             }
         }
-        stage('Docker compose back') {
+        stage('Docker compose') {
             steps {
                 script{
                     FAILED_STAGE=env.STAGE_NAME
