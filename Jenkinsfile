@@ -13,7 +13,7 @@ pipeline {
         NEXUS_CREDENTIAL_ID = "nexus-user-credential"
     }
     stages{
-        stage('Checkout GIT'){
+        stage('Pull GIT'){
             steps{
                 script{
                     FAILED_STAGE=env.STAGE_NAME;
@@ -23,7 +23,7 @@ pipeline {
                 }
             }
         }
-        stage('MVN package') {
+        stage('MVN clean package') {
             steps {
                 script{
                     FAILED_STAGE=env.STAGE_NAME
@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         }
-        stage('MVN SonarQube') {
+        stage('MVN Jacoco && SonarQube') {
             steps {
                 script {
                     FAILED_STAGE=env.STAGE_NAME
@@ -85,7 +85,7 @@ pipeline {
                 }
             }
         }
-        stage('Docker compose') {
+        stage('Docker compose back') {
             steps {
                 script{
                     FAILED_STAGE=env.STAGE_NAME
@@ -93,7 +93,7 @@ pipeline {
                 }
             }
         }
-        stage('Cleaning up') {
+        stage('Clean up') {
             steps {
                 script{
                     FAILED_STAGE=env.STAGE_NAME
