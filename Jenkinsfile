@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        registry= "rayenbourguiba/skistationdevopsimage"
-        registryCredential = 'DockerHub'
+        registry = "rayenbourguiba/skistationdevopsimage"
+        registryCredential = 'dockerhub'
 
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
@@ -12,60 +12,102 @@ pipeline {
 
         dockerImage = ''
     }
-    stages{
-        stage('Checkout GIT'){
-            steps{
-                echo 'Pulling...';
+    stages {
+        stage('Checkout Git') {
+            steps {
+                echo 'Pulling...'
                 git branch: 'RayenBourguiba-5TWIN5-G7',
-                url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation';
+                    url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation.git'
             }
         }
-        stage('MVN package') {
-            steps {
-                sh 'mvn -DskipTests clean package'
-            }
-        }
-        stage('Unit Tests') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-//        stage('SonarQube Analysis') {
-//            steps {
-//                    sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=password"
-//            }
-//        }
-        stage('Code Coverage and SonarQube Analysis') {
-            steps {
-                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=password'
-            }
-        }
-        stage('Building Docker image') {
+
+        stage('Build and Test') {
             steps {
                 script {
-                    dockerImage = docker.build rayenbourguiba + ":$BUILD_NUMBER"
+                    sh 'mvn clean'
+                    sh 'mvn -version'
+                    sh 'java -version '
+                    sh 'mvn compile'
+                    sh 'mvn test'
+                    sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
+                    sh 'mvn sonar:sonar -Dsonar.host.url=http://172.10.0.140:9000 -Dsonar.login=admin -Dsonar.password=password'
                 }
             }
         }
-        stage('Deploy docker image') {
+
+        stage('Docker Compose') {
+            steps {
+                sh "docker-compose up -d"
+            }
+        }
+
+        stage('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
+                    DOCKER_BUILDKIT = 0
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    echo 'Building our Docker Image rayenbourguiba/skistationdevopsimage...'
+                    sh 'docker build -t rayenbourguiba/skistationdevopsimage .'
+                }
+            }
+        }
+
+        stage('Deploy Docker Image') {
+            steps {
+                script {
+                    try {
+                        echo "Pushing Docker image to the registry..."
+                        docker.withRegistry('', registryCredential) {
+                            dockerImage.push()
+                        }
+                        currentBuild.result = 'SUCCESS'
+                    } catch (Exception e) {
+                        echo "Error pushing Docker image to the registry: ${e}"
+                        currentBuild.result = 'FAILURE'
+                        error("Failed to push Docker image.")
                     }
                 }
             }
         }
-        stage('Nexus Deployment') {
+
+        stage('Deploy to Nexus') {
             steps {
-                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://172.10.0.140:8081/repository/maven-snapshots/'
+                script {
+                    def repositoryUrl = isSnapshot() ? "${NEXUS_URL}/repository/maven-snapshots/" : "${NEXUS_URL}/repository/maven-releases/"
+                    try {
+                        sh "mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::${repositoryUrl}"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error("Maven deploy failed: ${e.message}")
+                    }
+                }
             }
         }
-        stage('Cleaning up') {
+
+        stage('Cleanup') {
             steps {
                 sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
+    post {
+        success {
+            emailext(
+                subject: "Pipeline Success: 5TWIN5-OneZero-SkiStation",
+                body: "Congratulations! The pipeline executed successfully.",
+                to: "rayen.bourguiba@esprit.tn"
+            )
+        }
+        failure {
+            emailext(
+                subject: "Pipeline Failure: 5TWIN5-OneZero-SkiStation",
+                body: "Oops! Something went wrong during the pipeline execution. Please check the Jenkins logs for more details.",
+                to: "rayen.bourguiba@esprit.tn"
+            )
+        }
+    }
+}
+
+def isSnapshot() {
+    return sh(script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim().endsWith('-SNAPSHOT')
 }
