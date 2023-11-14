@@ -1,8 +1,8 @@
 package tn.esprit.spring.InstructorTests;
 
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -31,7 +31,7 @@ public class InstructorCntTests {
     @Mock
     private IInstructorRepository instructorRepository;
 
-    @Before()
+    @BeforeEach
     public void init() {
         MockitoAnnotations.initMocks(this);
     }

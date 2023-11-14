@@ -1,7 +1,7 @@
 package tn.esprit.spring.SubscriptionTests;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -24,7 +24,7 @@ public class SubscriptionServicesMockitoTest {
     @Mock
     private ISubscriptionRepository subscriptionRepository;
 
-    @Before
+    @BeforeEach
     public void init() {
         MockitoAnnotations.initMocks(this);
     }

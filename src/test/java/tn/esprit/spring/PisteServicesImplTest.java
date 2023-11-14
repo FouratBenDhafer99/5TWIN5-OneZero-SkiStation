@@ -83,12 +83,16 @@ public class PisteServicesImplTest {
         // Create a Piste to update
         Piste pisteToUpdate = new Piste(5L, "piste5", Color.GREEN, 6, 5, null);
 
+        // Mock the behavior of pisteRepository.findById()
+        Mockito.when(pisteRepository.findById(5L)).thenReturn(Optional.of(pisteToUpdate));
+
         // Call the actual service method
         Piste result = pisteServices.updatePiste(pisteToUpdate);
 
         // Assertions
         Assertions.assertEquals(pisteToUpdate, result);
     }
+
 
 
     @Test
