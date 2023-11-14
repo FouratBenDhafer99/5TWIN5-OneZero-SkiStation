@@ -21,7 +21,7 @@ public class GestionStationSkiApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://192.168.1.15:5000/")
+						.allowedOrigins("http://localhost:3000")
 						.allowedMethods("GET", "POST", "PUT", "DELETE")
 						.allowedHeaders("*");
 			}
