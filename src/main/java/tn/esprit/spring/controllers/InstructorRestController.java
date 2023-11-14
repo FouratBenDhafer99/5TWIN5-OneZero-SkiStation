@@ -29,6 +29,7 @@ public class InstructorRestController {
         return  instructorServices.addInstructorAndAssignToCourse(convertToInstructor(instructor),numCourse);
     }
     @Operation(description = "Retrieve all Instructors")
+    @CrossOrigin(origins = "*")
     @GetMapping("/all")
     public List<Instructor> getAllInstructors(){
         return instructorServices.retrieveAllInstructors();
