@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.spring.dto.PisteDTO;
 import tn.esprit.spring.entities.Piste;
 import tn.esprit.spring.services.IPisteServices;
 
@@ -19,8 +20,8 @@ public class PisteRestController {
 
     @Operation(description = "Add Piste")
     @PostMapping("/add")
-    public Piste addPiste(@RequestBody Piste piste){
-        return  pisteServices.addPiste(piste);
+    public Piste addPiste(@RequestBody PisteDTO piste){
+        return  pisteServices.addPiste(convertToPiste(piste));
     }
     @Operation(description = "Retrieve all Pistes")
     @GetMapping("/all")
@@ -39,6 +40,17 @@ public class PisteRestController {
     public void deleteById(@PathVariable("id-piste") Long numPiste){
         pisteServices.removePiste(numPiste);
     }
-    
 
+
+    private Piste convertToPiste(PisteDTO pisteDTO) {
+        Piste piste= new Piste();
+        piste.setNumPiste(pisteDTO.getNumPiste());
+        piste.setNamePiste(pisteDTO.getNamePiste());
+        piste.setColor(pisteDTO.getColor());
+        piste.setLength(pisteDTO.getLength());
+        piste.setSlope(pisteDTO.getSlope());
+        piste.setSkiers(pisteDTO.getSkiers());
+
+        return piste;
+    }
 }

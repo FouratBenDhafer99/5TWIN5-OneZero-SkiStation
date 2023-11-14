@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.spring.dto.SkierDTO;
+import tn.esprit.spring.dtow.InstructorDTO;
+import tn.esprit.spring.entities.Instructor;
 import tn.esprit.spring.entities.Skier;
 import tn.esprit.spring.entities.TypeSubscription;
 import tn.esprit.spring.services.ISkierServices;
@@ -20,15 +23,15 @@ public class SkierRestController {
 
     @Operation(description = "Add Skier")
     @PostMapping("/add")
-    public Skier addSkier(@RequestBody Skier skier){
-        return  skierServices.addSkier(skier);
+    public Skier addSkier(@RequestBody SkierDTO skier){
+        return  skierServices.addSkier(convertToSkier(skier));
     }
 
     @Operation(description = "Add Skier And Assign To Course")
     @PostMapping("/addAndAssign/{numCourse}")
-    public Skier addSkierAndAssignToCourse(@RequestBody Skier skier,
+    public Skier addSkierAndAssignToCourse(@RequestBody SkierDTO skier,
                                            @PathVariable("numCourse") Long numCourse){
-        return  skierServices.addSkierAndAssignToCourse(skier,numCourse);
+        return  skierServices.addSkierAndAssignToCourse(convertToSkier(skier),numCourse);
     }
     @Operation(description = "Assign Skier To Subscription")
     @PutMapping("/assignToSub/{numSkier}/{numSub}")
@@ -66,4 +69,17 @@ public class SkierRestController {
         return skierServices.retrieveAllSkiers();
     }
 
+    private Skier convertToSkier(SkierDTO skierDTO) {
+        Skier skier= new Skier();
+        skier.setNumSkier(skierDTO.getNumSkier());
+        skier.setFirstName(skierDTO.getFirstName());
+        skier.setLastName(skierDTO.getLastName());
+        skier.setDateOfBirth(skierDTO.getDateOfBirth());
+        skier.setCity(skierDTO.getCity());
+        skier.setPistes(skierDTO.getPistes());
+        skier.setRegistrations(skierDTO.getRegistrations());
+        skier.setSubscription(skierDTO.getSubscription());
+
+        return skier;
+    }
 }
