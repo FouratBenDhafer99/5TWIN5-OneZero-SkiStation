@@ -41,7 +41,6 @@ public class SkierServicesImpl implements ISkierServices {
             case MONTHLY:
                 skier.getSubscription().setEndDate(skier.getSubscription().getStartDate().plusMonths(1));
                 break;
-            default:
         }
         return skierRepository.save(skier);
     }

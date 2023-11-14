@@ -1,18 +1,32 @@
-package tn.esprit.spring.dto;
+package tn.esprit.spring.DTO;
 
-import lombok.*;
-import tn.esprit.spring.entities.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tn.esprit.spring.entities.Piste;
+import tn.esprit.spring.entities.Registration;
+import tn.esprit.spring.entities.Subscription;
+
 import java.time.LocalDate;
 import java.util.Set;
 
-@AllArgsConstructor @Getter @Setter @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class SkierDTO {
-    private Long numSkier;
-    private String firstName;
-    private String lastName;
-    private LocalDate dateOfBirth;
-    private String city;
-    private Subscription subscription;
-    private Set<Piste> pistes;
-    private Set<Registration> registrations;
+
+    Long numSkier;
+    String firstName;
+    String lastName;
+    LocalDate dateOfBirth;
+    String city;
+
+    Subscription subscription;
+
+    Set<Piste> pistes;
+
+
+    Set<Registration> registrations;
 }

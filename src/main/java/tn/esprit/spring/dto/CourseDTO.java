@@ -1,4 +1,4 @@
-package tn.esprit.spring.dto;
+package tn.esprit.spring.DTO;
 
 import lombok.*;
 import tn.esprit.spring.entities.*;
