@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.persistence.*;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
