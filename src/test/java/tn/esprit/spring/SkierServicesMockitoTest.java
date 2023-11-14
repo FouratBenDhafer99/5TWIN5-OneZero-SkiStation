@@ -12,6 +12,7 @@ import tn.esprit.spring.services.*;
 import java.time.LocalDate;
 import java.util.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class SkierServicesMockitoTest {
@@ -20,7 +21,10 @@ public class SkierServicesMockitoTest {
 
     @Mock
     private ISkierRepository skierRepository;
-
+    @Mock
+    private ICourseRepository courseRepository;
+    @Mock
+    private IRegistrationRepository registrationRepository;
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -37,7 +41,7 @@ public class SkierServicesMockitoTest {
     }
 
     @Test
-    public void testAddCourse() {
+    public void testAddSkier() {
         Skier skier = new Skier(3L,"Iheb", "Bourguiba", LocalDate.now(),"Ariana", new Subscription(), new HashSet<Piste>(), new HashSet<Registration>());
         when(skierRepository.save(skier)).thenReturn(skier);
         Skier result = skierServices.addSkier(skier);
@@ -45,11 +49,12 @@ public class SkierServicesMockitoTest {
     }
 
     @Test
-    public void testRetrieveCourse() {
+    public void testRetrieveSkier() {
         Long skierId = 4L;
         Skier skier = new Skier(4L,"Hassen", "Bourguiba", LocalDate.now(),"Tunis", new Subscription(), new HashSet<Piste>(), new HashSet<Registration>());
         when(skierRepository.findById(skierId)).thenReturn(Optional.of(skier));
         Skier result = skierServices.retrieveSkier(skierId);
         assertEquals(skier, result);
     }
+
 }
