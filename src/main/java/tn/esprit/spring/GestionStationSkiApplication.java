@@ -5,9 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @EnableScheduling
@@ -18,7 +17,6 @@ public class GestionStationSkiApplication {
 		SpringApplication.run(GestionStationSkiApplication.class, args);
 	}
 
-	/*
 	@Bean
 	public static WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
@@ -30,8 +28,8 @@ public class GestionStationSkiApplication {
 						.allowedHeaders("*");
 			}
 		};
-	}*/
-
+	}
+/*
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -42,5 +40,5 @@ public class GestionStationSkiApplication {
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
-	}
+	}*/
 }
