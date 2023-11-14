@@ -18,5 +18,5 @@ public class SubscriptionDTO {
     private LocalDate endDate;
     private Float price;
     private TypeSubscription typeSub;
-
+//here
 }
