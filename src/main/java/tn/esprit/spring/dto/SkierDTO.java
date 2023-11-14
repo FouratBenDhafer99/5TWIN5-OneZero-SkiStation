@@ -5,7 +5,7 @@ import tn.esprit.spring.entities.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-@AllArgsConstructor @Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class SkierDTO {
     private Long numSkier;
     private String firstName;
